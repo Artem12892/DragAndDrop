@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переміщувані об'єкти</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .draggable {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+        }
+        .box1 {
+            background-color: red;
+        }
+        .box2 {
+            background-color: green;
+        }
+        .box3 {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="draggable box1" id="box1" style="top: 50px; left: 50px;"></div>
+    <div class="draggable box2" id="box2" style="top: 200px; left: 200px;"></div>
+    <div class="draggable box3" id="box3" style="top: 350px; left: 350px;"></div>
+
+    <script>
+        let draggedElement = null;
+        let offsetX, offsetY;
+
+        // Функція для початку переміщення
+        function startDrag(event, element) {
+            draggedElement = element;
+            offsetX = event.clientX - draggedElement.getBoundingClientRect().left;
+            offsetY = event.clientY - draggedElement.getBoundingClientRect().top;
+
+            // Додаємо події для переміщення та завершення переміщення
+            document.addEventListener('mousemove', dragElement);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        // Функція для переміщення елемента
+        function dragElement(event) {
+            if (draggedElement !== null) {
+                let newX = event.clientX - offsetX;
+                let newY = event.clientY - offsetY;
+                draggedElement.style.left = newX + 'px';
+                draggedElement.style.top = newY + 'px';
+            }
+        }
+
+        // Функція для завершення переміщення
+        function stopDrag() {
+            draggedElement = null;
+            document.removeEventListener('mousemove', dragElement);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // Додаємо обробники подій для кожного елемента
+        document.getElementById('box1').addEventListener('mousedown', function(event) {
+            startDrag(event, this);
+        });
+
+        document.getElementById('box2').addEventListener('mousedown', function(event) {
+            startDrag(event, this);
+        });
+
+        document.getElementById('box3').addEventListener('mousedown', function(event) {
+            startDrag(event, this);
+        });
+    </script>
+
+</body>
+</html>
